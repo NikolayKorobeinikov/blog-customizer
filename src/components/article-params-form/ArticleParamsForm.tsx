@@ -15,7 +15,6 @@ import {
 } from 'src/constants/articleProps';
 
 import styles from './ArticleParamsForm.module.scss';
-import clsx from 'clsx';
 
 type ArticleParamsFormProps = {
 	isOpen: boolean;
@@ -39,21 +38,30 @@ export const ArticleParamsForm = ({
 	const sidebarRef = useRef<HTMLDivElement>(null);
 	const arrowButtonRef = useRef<HTMLDivElement>(null);
 
-	// Обработка клика вне сайдбара и клавиши Escape
+	// Обработка клика вне сайдбара
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			const target = event.target as Element;
+			const isOutsideSidebar =
+				sidebarRef.current && !sidebarRef.current.contains(target);
+			const isOutsideArrowButton =
+				arrowButtonRef.current && !arrowButtonRef.current.contains(target);
 
-			if (
-				sidebarRef.current &&
-				!sidebarRef.current.contains(target) &&
-				arrowButtonRef.current &&
-				!arrowButtonRef.current.contains(target)
-			) {
+			if (isOutsideSidebar && isOutsideArrowButton) {
 				onClose();
 			}
 		};
 
+		if (isOpen) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isOpen, onClose]);
+
+	useEffect(() => {
 		const handleEscapeKey = (event: KeyboardEvent) => {
 			if (event.key === 'Escape' && isOpen) {
 				onClose();
@@ -61,12 +69,10 @@ export const ArticleParamsForm = ({
 		};
 
 		if (isOpen) {
-			document.addEventListener('mousedown', handleClickOutside);
 			document.addEventListener('keydown', handleEscapeKey);
 		}
 
 		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
 			document.removeEventListener('keydown', handleEscapeKey);
 		};
 	}, [isOpen, onClose]);
@@ -114,7 +120,9 @@ export const ArticleParamsForm = ({
 			/>
 			<aside
 				ref={sidebarRef}
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
+				className={`${styles.container} ${
+					isOpen ? styles.container_open : ''
+				}`}>
 				<form
 					className={styles.form}
 					onSubmit={handleFormSubmit}
@@ -143,32 +151,32 @@ export const ArticleParamsForm = ({
 
 					<Separator />
 
-					<RadioGroup
+					<Select
 						title='цвет текста'
-						name='fontColor'
 						options={fontColors}
 						selected={state.fontColor}
 						onChange={handleFontColorChange}
+						placeholder='Выберите цвет текста'
 					/>
 
 					<Separator />
 
-					<RadioGroup
+					<Select
 						title='цвет фона'
-						name='bgColor'
 						options={backgroundColors}
 						selected={state.backgroundColor}
 						onChange={handleBgColorChange}
+						placeholder='Выберите цвет фона'
 					/>
 
 					<Separator />
 
-					<RadioGroup
+					<Select
 						title='ширина контента'
-						name='contentWidth'
 						options={contentWidthArr}
 						selected={state.contentWidth}
 						onChange={handleContentWidthChange}
+						placeholder='Выберите ширину контента'
 					/>
 
 					<Separator />
