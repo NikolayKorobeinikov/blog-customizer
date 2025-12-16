@@ -1,7 +1,6 @@
-import { Text } from 'src/ui/text';
-
-import styles from './Button.module.scss';
 import { clsx } from 'clsx';
+import { Text } from 'src/ui/text';
+import styles from './Button.module.scss';
 
 export const Button = ({
 	title,
@@ -18,8 +17,7 @@ export const Button = ({
 		<button
 			className={clsx(
 				styles.button,
-				{ [styles.button_apply]: type === 'apply' },
-				{ [styles.button_clear]: type === 'clear' }
+				type === 'apply' ? styles.button_apply : styles.button_clear
 			)}
 			type={htmlType}
 			onClick={onClick}>

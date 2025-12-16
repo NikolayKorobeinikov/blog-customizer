@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { clsx } from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
 import { useEnterSubmit } from './hooks/useEnterSubmit';
@@ -28,7 +29,7 @@ export const Option = (props: OptionProps) => {
 
 	return (
 		<div
-			className={styles.item}
+			className={clsx(styles.item, isChecked && styles.itemChecked)}
 			key={value}
 			data-checked={isChecked}
 			data-testid={inputId}
@@ -43,7 +44,9 @@ export const Option = (props: OptionProps) => {
 				onChange={handleChange}
 				tabIndex={-1}
 			/>
-			<label className={styles.label} htmlFor={inputId}>
+			<label
+				className={clsx(styles.label, isChecked && styles.labelChecked)}
+				htmlFor={inputId}>
 				<Text size={18} uppercase>
 					{title}
 				</Text>

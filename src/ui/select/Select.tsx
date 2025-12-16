@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import type { MouseEventHandler } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
 import arrowDown from 'src/images/arrow-down.svg';
@@ -65,9 +65,9 @@ export const Select = (props: SelectProps) => {
 				<div
 					className={clsx(
 						styles.placeholder,
-						(styles as Record<string, string>)[optionClassName]
+						optionClassName && styles[optionClassName]
 					)}
-					data-status={status}
+					data-status='default'
 					data-selected={!!selected?.value}
 					onClick={handlePlaceHolderClick}
 					role='button'
