@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { Text } from 'src/ui/text';
 import styles from './Button.module.scss';
 
@@ -14,9 +15,10 @@ export const Button = ({
 }) => {
 	return (
 		<button
-			className={`${styles.button} ${
+			className={clsx(
+				styles.button,
 				type === 'apply' ? styles.button_apply : styles.button_clear
-			}`}
+			)}
 			type={htmlType}
 			onClick={onClick}>
 			<Text weight={800} uppercase>

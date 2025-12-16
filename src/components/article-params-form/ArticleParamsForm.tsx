@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { clsx } from 'clsx';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import { RadioGroup } from 'src/ui/radio-group';
@@ -120,9 +121,9 @@ export const ArticleParamsForm = ({
 			/>
 			<aside
 				ref={sidebarRef}
-				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
-				}`}>
+				className={clsx(styles.container, {
+					[styles.container_open]: isOpen,
+				})}>
 				<form
 					className={styles.form}
 					onSubmit={handleFormSubmit}
@@ -139,8 +140,6 @@ export const ArticleParamsForm = ({
 						placeholder='Выберите шрифт'
 					/>
 
-					<Separator />
-
 					<RadioGroup
 						title='размер шрифта'
 						name='fontSize'
@@ -148,8 +147,6 @@ export const ArticleParamsForm = ({
 						selected={state.fontSizeOption}
 						onChange={handleFontSizeChange}
 					/>
-
-					<Separator />
 
 					<Select
 						title='цвет текста'
@@ -169,8 +166,6 @@ export const ArticleParamsForm = ({
 						placeholder='Выберите цвет фона'
 					/>
 
-					<Separator />
-
 					<Select
 						title='ширина контента'
 						options={contentWidthArr}
@@ -178,8 +173,6 @@ export const ArticleParamsForm = ({
 						onChange={handleContentWidthChange}
 						placeholder='Выберите ширину контента'
 					/>
-
-					<Separator />
 
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
